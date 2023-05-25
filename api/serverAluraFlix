@@ -1,0 +1,19 @@
+// See https://github.com/typicode/json-server#module
+const jsonServer = require('json-server')
+const serverAluraFlix = jsonServer.create()
+const router = jsonServer.router('db.json')
+const middlewares = jsonServer.defaults()
+
+serverAluraFlix.use(middlewares)
+// Add this before serverAluraFlix.use(router)
+serverAluraFlix.use(jsonServer.rewriter({
+    '/api/*': '/$1',
+    '/blog/:resource/:id/show': '/:resource/:id'
+}))
+serverAluraFlix.use(router)
+serverAluraFlix.listen(3030, () => {
+    console.log('JSON Server is running')
+})
+
+// Export the Server API
+module.exports = serverAluraFlix
